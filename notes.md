@@ -26,7 +26,11 @@
 `mount /dev/sdx1 /mnt/boot`
 
 ## package install to /mnt
-`xbps-install -S -r /mnt -R "$REPO" base-system limine terminus-font neovim dhcpcd openresolv sudo`
+```
+xbps-install -S -r /mnt -R "$REPO" \
+base-system xtools cryptsetup limine efibootmgr \
+terminus-font neovim dhcpcd openresolv sudo
+```
 
 ## generate fstab & chrooting
 `xgenfstab -U /mnt > /mnt/etc/fstab`
@@ -35,3 +39,65 @@
 # configuring system
 
 ## /etc/rc.conf
+uncomment
+```
+HARDWARECLOCK="localtime"
+TIMEZONE="Europe/Moscow"
+KEYMAP="us"
+FONT="ter-u28b"
+```
+## hostname
+`echo "*name*" > /etc/hostname`
+
+## runit (sv)
+```
+# services store in /etc/sv
+# link service dir to /var/service to activate it
+ln -s /etc/sv/*service* /var/service
+```
+# initramfs & bootloader & cryptsetup
+
+## cryptsetup
+```
+# correct rights
+chmod -R g-rwx,o-rwx /boot
+
+```
+### /etc/crypttab
+`root   /dev/sdx2   /boot/volume.key   luks`
+
+## dracut
+
+### /etc/dracut.conf.d/10-crypt.conf
+`install_items+=" /boot/volume.key /etc/crypttab "`
+
+### update dracut
+`xbps-reconfigure -fa`
+
+## limine setup
+```
+# copy efi image limine to esp:
+mkdir -p /boot/EFI/limine
+cp /usr/share/limine/BOOTX64.EFI /boot/EFI/limine
+# adding bootloader to nvram manually
+efibootmgr \
+  --create \
+  --disk /dev/sdX \
+  --part Y \
+  --label "Limine Boot Loader" \
+  --loader '\EFI\limine\BOOTX64.EFI' \
+  --unicode
+# configuring limine
+mkdir /boot/limine
+```
+### /boot/limine/limine.conf
+```
+timeout: 0
+/Void
+  protocol: linux
+  path: boot():/vmlinuz-*kernel-version*
+  cmdline: rd.luks.uuid=<UUID> root=/dev/mapper/root rw
+  module_path: boot():/initramfs-*kernel-version*.img
+```
+check UUID
+`blkid -o value -s UUID /dev/sdx2`
