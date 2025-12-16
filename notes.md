@@ -96,7 +96,7 @@ timeout: 0
 /Void
   protocol: linux
   path: boot():/vmlinuz-*kernel-version*
-  cmdline: rd.luks.uuid=<UUID> root=/dev/mapper/root rw
+  cmdline: rd.luks.uuid=<UUID> root=/dev/mapper/root rootfstype=btrfs rootflags=subvol=@ rw
   module_path: boot():/initramfs-*kernel-version*.img
 ```
 check UUID
