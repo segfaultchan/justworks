@@ -2,7 +2,7 @@
 
 ## variables
 `XBPS_ARCH=x86_64-musl`
-`REPO=https://repo-default.voidlinux.org/current`
+`REPO=https://repo-default.voidlinux.org/current/musl`
 
 ## LUKS
 `cryptsetup luksFormat /dev/sdx2 --iter-time=2000 --pbkdf=argon2id --key-size=256 --hash=sha256`
@@ -12,9 +12,9 @@
 `mkfs.btrfs -L rootfs /dev/mapper/root`
 `mount /dev/mapper/root /mnt`
 `cd /mnt`
-`btrfs sv cr @`
-`btrfs sv cr @home`
-`btrfs sv cr @var`
+`btrfs subvolume create @`
+`btrfs subvolume create @home`
+`btrfs subvolume create @var`
 `cd`
 `umount /dev/mapper/root`
 `mount -o compress=zstd3,subvol=@ /dev/mapper/root /mnt`
@@ -63,8 +63,6 @@ ln -s /etc/sv/*service* /var/service
 chmod -R g-rwx,o-rwx /boot
 
 ```
-### /etc/crypttab
-`root   /dev/sdx2   /boot/volume.key   luks`
 
 ## dracut
 
