@@ -24,6 +24,3 @@ get_script_dir()
     SCRIPT_DIR="$(cd -P "$( dirname "$SOURCE_PATH" )" >/dev/null 2>&1 && pwd)"
     echo "$SCRIPT_DIR"
 }
-
-echo "get_script_dir: $(get_script_dir)"
-
