@@ -8,8 +8,14 @@ BLUE="\e[34m"
 RESET="\e[0m"
 BOLD="\e[1m"
 
+# name
+NAME=justworks
+
 # Exit immediately if a command exits with a non-zero status
 set -eEo pipefail
+
+# run
+greeting
 
 get_script_dir()
 {
@@ -34,7 +40,8 @@ get_script_dir()
 }
 
 greeting() {
-  figlet
+  cd $(get_script_dir)
+  ./figlet -f ./share/figlet/Delta Corps Priest 1.flf
 }
 
 partitioning()
