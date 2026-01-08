@@ -14,9 +14,6 @@ NAME=justworks
 # Exit immediately if a command exits with a non-zero status
 set -eEo pipefail
 
-# run
-greeting
-
 get_script_dir()
 {
   local SOURCE_PATH="${BASH_SOURCE[0]}"
@@ -48,3 +45,6 @@ partitioning()
 {
   echo 
 }
+
+# run
+greeting
