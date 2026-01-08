@@ -40,6 +40,7 @@ get_script_dir()
 # vars 2
 SCRIPT_DIR=$(get_script_dir)
 LD_LIBRARY_PATH="$SCRIPT_DIR/lib:$LD_LIBRARY_PATH"
+PATH="$PATH:$SCRIPT_DIR/bin"
 
 ct() {
   local NEXT
@@ -55,7 +56,7 @@ ct() {
 
 greeting() {
   cd "$SCRIPT_DIR"
-  ./bin/figlet -t -c -f ./share/figlet/Delta\ Corps\ Priest\ 1.flf $NAME | ./bin/lolcat
+  figlet -t -c -f ./share/figlet/Delta\ Corps\ Priest\ 1.flf $NAME | lolcat
   echo ""
   echo ""
   echo ""
