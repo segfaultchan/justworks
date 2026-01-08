@@ -39,7 +39,6 @@ get_script_dir()
 
 # vars 2
 SCRIPT_DIR=$(get_script_dir)
-LD_LIBRARY_PATH="$SCRIPT_DIR/lib:$LD_LIBRARY_PATH"
 PATH="$PATH:$SCRIPT_DIR/bin"
 
 ct() {
@@ -61,6 +60,8 @@ greeting() {
   echo ""
   echo ""
   echo ""
+  # install dependencies
+  xi parted
 }
 
 network() {
