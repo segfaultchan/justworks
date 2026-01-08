@@ -38,7 +38,7 @@ terminus-font neovim dhcpcd openresolv sudo
 
 # configuring system
 
-## /etc/rc.conf
+### /etc/rc.conf
 uncomment
 ```
 HARDWARECLOCK="localtime"
@@ -101,6 +101,7 @@ efibootmgr \
 # configuring limine
 mkdir /boot/limine
 ```
+
 ### /boot/limine/limine.conf
 ```
 timeout: 0
@@ -110,5 +111,6 @@ timeout: 0
   cmdline: rd.luks.uuid=<UUID> root=/dev/mapper/root rootfstype=btrfs rootflags=subvol=@ rw
   module_path: boot():/initramfs-*kernel-version*.img
 ```
+
 check UUID
 `blkid -o value -s UUID /dev/sdx2`

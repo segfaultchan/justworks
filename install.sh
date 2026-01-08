@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# colors
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+RESET="\e[0m"
+BOLD="\e[1m"
+
 # Exit immediately if a command exits with a non-zero status
 set -eEo pipefail
 
@@ -25,7 +33,11 @@ get_script_dir()
   echo "$SCRIPT_DIR"
 }
 
+greeting() {
+  figlet
+}
+
 partitioning()
 {
-  
+  echo 
 }
