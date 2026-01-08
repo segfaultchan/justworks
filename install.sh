@@ -36,8 +36,11 @@ get_script_dir()
   echo "$SCRIPT_DIR"
 }
 
+# script dir
+SCRIPT_DIR=$(get_script_dir)
+
 greeting() {
-  cd $(get_script_dir)
+  cd $SCRIPT_DIR
   ./bin/figlet -t -c -f ./share/figlet/Delta\ Corps\ Priest\ 1.flf $NAME | ./bin/lolcat
 }
 
