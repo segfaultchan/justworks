@@ -39,15 +39,41 @@ get_script_dir()
 # script dir
 SCRIPT_DIR=$(get_script_dir)
 
+ct() {
+  local NEXT
+  while true; do
+    echo "continue? [y/n]: "
+    read NEXT
+  case $NEXT in
+    y|Y) break ;;
+    n|N) echo -e "${RED}aborted..${RESET}"; exit 1 ;;
+  esac
+  done
+}
+
 greeting() {
-  cd $SCRIPT_DIR
+  cd "$SCRIPT_DIR"
   ./bin/figlet -t -c -f ./share/figlet/Delta\ Corps\ Priest\ 1.flf $NAME | ./bin/lolcat
+  echo ""
+  echo ""
+  echo ""
+  echo ""
+}
+
+network() {
+  echo -e "${RED}-- no networking setup, do it manually${RESET}"
 }
 
 partitioning()
 {
-  echo 
+  echo -e "-- Manual ${RED}partitioning${RESET}"
+  echo -e "-- Current disks"
+  lsblk -d
 }
 
 # run
 greeting
+ct
+
+partitioning
+ct
