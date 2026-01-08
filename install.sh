@@ -38,7 +38,7 @@ get_script_dir()
 
 greeting() {
   cd $(get_script_dir)
-  ./bin/figlet -f ./share/figlet/Delta\ Corps\ Priest\ 1.flf $NAME
+  ./bin/figlet -t -c -f ./share/figlet/Delta\ Corps\ Priest\ 1.flf $NAME | ./bin/lolcat
 }
 
 partitioning()
