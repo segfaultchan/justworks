@@ -8,8 +8,9 @@ BLUE="\e[34m"
 RESET="\e[0m"
 BOLD="\e[1m"
 
-# name
+# vars
 NAME=justworks
+DISK=none
 
 # Exit immediately if a command exits with a non-zero status
 set -eEo pipefail
@@ -42,11 +43,11 @@ SCRIPT_DIR=$(get_script_dir)
 ct() {
   local NEXT
   while true; do
-    echo "continue? [y/n]: "
+    echo "-- continue? [y/n]: "
     read NEXT
   case $NEXT in
     y|Y) break ;;
-    n|N) echo -e "${RED}aborted..${RESET}"; exit 1 ;;
+    n|N) echo -e "${RED}-- aborted..${RESET}"; exit 1 ;;
   esac
   done
 }
@@ -68,7 +69,21 @@ partitioning()
 {
   echo -e "-- Manual ${RED}partitioning${RESET}"
   echo -e "-- Current disks"
-  lsblk -d
+  lsblk -dno NAME,SIZE
+
+  while true; do
+    echo "-- which disk do u prefer? "
+    read DISK
+
+    if [[ -b "/dev/$DISK" && $DISK != "" ]]; then
+      # if correct
+      echo -e "-- your choice: ${RED}/dev/$DISK${RESET}"
+      break
+    fi
+      # if dont correct
+    lsblk -dno NAME,SIZE
+    echo -e "-- disk dont exist${RED} use that format${RESET}: sda"
+  done
 }
 
 # run
