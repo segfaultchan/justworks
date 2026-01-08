@@ -88,7 +88,7 @@ partitioning()
     echo -e "-- disk dont exist${RED} use that format${RESET}: sda"
   done
 
-  parted $DISK
+  parted /dev/$DISK
 }
 
 # run
