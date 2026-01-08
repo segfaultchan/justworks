@@ -37,8 +37,9 @@ get_script_dir()
   echo "$SCRIPT_DIR"
 }
 
-# script dir
+# vars 2
 SCRIPT_DIR=$(get_script_dir)
+LD_LIBRARY_PATH="$SCRIPT_DIR/lib:$LD_LIBRARY_PATH"
 
 ct() {
   local NEXT
@@ -84,6 +85,8 @@ partitioning()
     lsblk -dno NAME,SIZE
     echo -e "-- disk dont exist${RED} use that format${RESET}: sda"
   done
+
+  parted $DISK
 }
 
 # run
