@@ -181,6 +181,7 @@ step3()
     fi
   done
   set -e
+  echo -e "-- crypted ${RED}${PART2}${RESET} partition"
   
   mkfs.btrfs /dev/mapper/root
   mount /dev/mapper/root /mnt
@@ -193,6 +194,8 @@ step3()
   
   mkfs.vfat -F 32 ${PART1}
   mount ${PART1} /mnt/boot
+
+  echo -e "-- mounted ${RED}efi and btrfs${RESET}"
 
   # continue
   ct
