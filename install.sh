@@ -132,6 +132,7 @@ step2()
   done
 
   echo -e "-- making partitions using ${RED}parted${RESET} in script mode"
+  wipefs --all /dev/$DISK
   parted -s /dev/$DISK mklabel gpt
   parted -s /dev/$DISK mkpart primary 1MiB 513MiB
   parted -s /dev/$DISK mkpart primary 513MiB 100%
