@@ -215,12 +215,15 @@ step4()
   echo -e "-- ${GREEN}STEP 4${RESET}"
   echo -e "-- creating ${RED}world${RESET}"
 
+  mkdir -p /mnt/var/db/xbps/keys
+  cp /var/db/xbps/keys/* /mnt/var/db/xbps/keys/
+
   local CHOICE
   echo -e "-- install ${RED}laptop${RESET} packages? (wifi,power managment, etc): "
   read CHOICE
   case $CHOICE in
     y|Y) xbps-install -Sy -r /mnt -R $REPO $LAPTOP_PACKAGES ;;
-    n|N) echo -e "-- no laptop ${RED}packages${RESET}"; exit 1 ;;
+    n|N) echo -e "-- no laptop ${RED}packages${RESET}" ;;
   esac
   xbps-install -Sy -r /mnt -R $REPO $BASE_PACKAGES
 
