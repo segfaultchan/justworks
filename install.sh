@@ -97,7 +97,7 @@ partitioning()
   parted -s /dev/$DISK set 2 
   echo -e "-- ${RED}partitioning done${RESET}"
   parted -s /dev/$DISK print
-
+  greeting
 }
 
 # run
