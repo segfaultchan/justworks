@@ -96,7 +96,7 @@ partitioning()
   parted -s /dev/$DISK set 1 boot on
   parted -s /dev/$DISK set 2 
   echo -e "-- ${RED}partitioning done${RESET}"
-  parted -s /dev/$DISK print
+  parted /dev/$DISK print
 }
 
 # run
