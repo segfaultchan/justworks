@@ -119,7 +119,7 @@ init_fs_encrypt()
   echo "PART1=$PART1 PART2=$PART2"
 
   cryptsetup luksFormat ${PART2} --iter-time=2000 --pbkdf=argon2id --key-size=256 --hash=sha256
-  cryptsetup luksOpen /dev/${PART2} root
+  cryptsetup luksOpen ${PART2} root
   
   mkfs.btrfs /dev/mapper/root
   mount /dev/mapper/root /mnt
