@@ -60,7 +60,9 @@ reset_steps() {
   if mountpoint -q /mnt; then
     umount -R /mnt
   fi
-  cryptsetup luksClose root
+  if cryptsetup status root; then
+    cryptsetup luksClose root
+  fi
   echo -e "-- past installation ${RED}was reset${RESET}"
 }
 
