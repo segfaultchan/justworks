@@ -1,8 +1,6 @@
 #!/bin/bash
 
 STATE_PATH='./install.state'
-CURRENT_STEP=0
-STEP=0
 
 # colors
 RED="\e[31m"
@@ -60,48 +58,21 @@ ct()
   done
 }
 
-check-step()
-{
-  # checking step
-  if [[ ! -f "$STATE_PATH" ]]; then
-    touch "$STATE_PATH"
-  fi
-
-  CURRENT_STEP="$(<"$STATE_PATH")"
-  echo -e "-- starting from ${RED}${CURRENT_STEP} step"
-  echo ${CURRENT_STEP}
-}
-
 step0()
 {
-  STEP=0
-  # skip step check
-  if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return 0
-  fi
-  # checking internet connection
-  echo $STEP > "$STATE_PATH"
-
   set +e
-  if curl -s --head https://google.com --max-time 5 >/dev/null; then
-    echo -e "-- ${RED}internet connected${RESET}"
-  else
+  ping voidlinux.org -c 3
+  if [[ $? -eq 1 ]]
     echo -e "${RED}-- no networking setup, do it manually${RESET}"
     exit 1
-  fi
   set -e
   
 }
 
 step1()
 {
-  STEP=1
-  # skip step check
-  if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return 0
-  fi
   # break point to step1
-  echo $STEP > $STATE_PATH
+  echo 1 > $STATE_PATH
 
   echo -e "-- ${GREEN}STEP 1${RESET}"
   cd "$SCRIPT_DIR"
@@ -116,13 +87,8 @@ step1()
 
 step2()
 {
-  STEP=2
-  # skip step check
-  if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return 0
-  fi
   # break point to step2
-  echo $STEP > $STATE_PATH
+  echo 2 > $STATE_PATH
 
   echo -e "-- ${GREEN}STEP 2${RESET}"
   echo -e "-- Manual ${RED}partitioning${RESET}"
@@ -155,13 +121,8 @@ step2()
 
 step3()
 {
-  STEP=3
-  # skip step check
-  if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return 0
-  fi
   # break point to step3
-  echo $STEP > $STATE_PATH
+  echo 3 > $STATE_PATH
 
   echo -e "-- ${GREEN}STEP 3${RESET}"
   echo -e "-- making ${RED}fat32/btrfs and LUKS${RESET}"
@@ -208,8 +169,6 @@ step3()
 }
 
 # run
-check-step
-
 step0
 ct
 
