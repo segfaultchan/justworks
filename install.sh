@@ -11,6 +11,8 @@ BOLD="\e[1m"
 # vars
 NAME=justworks
 DISK=none
+PART1=none
+PART2=none
 
 # Exit immediately if a command exits with a non-zero status
 set -eEo pipefail
@@ -41,7 +43,8 @@ get_script_dir()
 SCRIPT_DIR=$(get_script_dir)
 PATH="$PATH:$SCRIPT_DIR/bin"
 
-ct() {
+ct()
+{
   local NEXT
   while true; do
     echo "-- continue? [y/n]: "
@@ -53,7 +56,8 @@ ct() {
   done
 }
 
-greeting() {
+greeting()
+{
   cd "$SCRIPT_DIR"
   figlet -t -c -f ./share/figlet/Delta\ Corps\ Priest\ 1.flf $NAME | lolcat
   echo ""
@@ -64,7 +68,8 @@ greeting() {
   xi parted
 }
 
-network() {
+network()
+{
   echo -e "${RED}-- no networking setup, do it manually${RESET}"
 }
 
@@ -98,9 +103,43 @@ partitioning()
   parted /dev/$DISK print
 }
 
+init_fs_encrypt()
+{
+  echo -e "-- making ${RED}fat32/btrfs and LUKS${RESET}"
+
+  PART1="/dev/${DISK}1"
+  PART2="/dev/${DISK}2"
+
+  if [[ "$DISK" == nvme* ]]; then
+    PART1="/dev/${DISK}p1"
+    PART2="/dev/${DISK}p2"
+  fi
+
+  echo "-- your partitions ${RED}are right?${RESET}"
+  echo "PART1=$PART1 PART2=$PART2"
+
+  cryptsetup luksFormat ${PART2} --iter-time=2000 --pbkdf=argon2id --key-size=256 --hash=sha256
+  cryptsetup luksOpen /dev/${PART2} root
+  
+  mkfs.btrfs /dev/mapper/root
+  mount /dev/mapper/root /mnt
+  btrfs subvolume create /mnt/@
+  btrfs subvolume create /mnt/@snapshots
+  umount /mnt
+  mount -o compress=zstd3,subvol=@ /dev/mapper/root /mnt
+  mkdir /mnt/{boot,.snapshots}
+  mount -o compress=zstd3,subvol=@snapshots /dev/mapper/root /mnt/.snapshots
+  
+  mkfs.vfat -F 32 /dev/${PART1}
+  mount /dev/${PART1}
+}
+
 # run
 greeting
 ct
 
 partitioning
+ct
+
+init_fs_encrypt
 ct
