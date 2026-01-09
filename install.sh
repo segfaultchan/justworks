@@ -1,9 +1,5 @@
 #!/bin/bash
 
-STATE_PATH='./install.state'
-CURRENT_STEP=0
-STEP=0
-
 # colors
 RED="\e[31m"
 GREEN="\e[32m"
@@ -60,27 +56,17 @@ ct()
   done
 }
 
-check-step()
-{
-  # checking step
-  if [[ ! -f "$STATE_PATH" ]]; then
-    touch "$STATE_PATH"
+reset_steps() {
+  if mountpoint -q /mnt; then
+    umount -R /mnt
   fi
-
-  CURRENT_STEP="$(<"$STATE_PATH")"
-  echo -e "-- starting from ${RED}${CURRENT_STEP} step${RESET}"
+  cryptsetup luksClose root
+  echo -e "-- past installation ${RED}was reset${RESET}"
 }
 
 step0()
 {
-  STEP=0
-  # skip step check
-  if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return
-  fi
   # checking internet connection
-  echo $STEP > "$STATE_PATH"
-
   set +e
   if curl -s --head https://google.com --max-time 5 >/dev/null; then
     echo -e "-- ${RED}internet connected${RESET}"
@@ -96,14 +82,7 @@ step0()
 
 step1()
 {
-  STEP=1
-  # skip step check
-  if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return
-  fi
-  # break point to step1
-  echo $STEP > $STATE_PATH
-
+  # print logo
   echo -e "-- ${GREEN}STEP 1${RESET}"
   cd "$SCRIPT_DIR"
   figlet -t -c -f ./share/figlet/Delta\ Corps\ Priest\ 1.flf $NAME | lolcat
@@ -120,14 +99,7 @@ step1()
 
 step2()
 {
-  STEP=2
-  # skip step check
-  if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return
-  fi
-  # break point to step2
-  echo $STEP > $STATE_PATH
-
+  # partitioning
   echo -e "-- ${GREEN}STEP 2${RESET}"
   echo -e "-- Manual ${RED}partitioning${RESET}"
   echo -e "-- Current disks"
@@ -162,14 +134,7 @@ step2()
 
 step3()
 {
-  STEP=3
-  # skip step check
-  if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return
-  fi
-  # break point to step3
-  echo $STEP > $STATE_PATH
-
+  # init fs and luks
   echo -e "-- ${GREEN}STEP 3${RESET}"
   echo -e "-- making ${RED}fat32/btrfs and LUKS${RESET}"
 
@@ -220,7 +185,7 @@ step3()
 }
 
 # run
-check-step
+reset_steps
 
 step0
 
