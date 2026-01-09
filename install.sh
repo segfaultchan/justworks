@@ -96,6 +96,7 @@ partitioning()
   parted -s /dev/$DISK set 1 boot on
   parted -s /dev/$DISK set 2 
   parted -s /dev/$DISK align-check optimal 1
+  echo "--"
   parted -s /dev/$DISK print
 
 }
