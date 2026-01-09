@@ -219,10 +219,10 @@ step4()
   echo -e "-- install ${RED}laptop${RESET} packages? (wifi,power managment, etc): "
   read CHOICE
   case $CHOICE in
-    y|Y) xbps-install -y -r /mnt -R $REPO $LAPTOP_PACKAGES ;;
+    y|Y) xbps-install -Sy -r /mnt -R $REPO $LAPTOP_PACKAGES ;;
     n|N) echo -e "-- no laptop ${RED}packages${RESET}"; exit 1 ;;
   esac
-  xbps-install -y -r /mnt -R $REPO $BASE_PACKAGES
+  xbps-install -Sy -r /mnt -R $REPO $BASE_PACKAGES
 
   # continue
   ct
@@ -231,12 +231,12 @@ step4()
 # run
 reset_steps
 
-step0
+#step0
 
-step1
+#step1
 
-step2
+#step2
 
-step3
+#step3
 
 step4
