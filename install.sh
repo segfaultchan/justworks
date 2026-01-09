@@ -8,11 +8,14 @@ BLUE="\e[34m"
 RESET="\e[0m"
 BOLD="\e[1m"
 
-# vars
+# important
 NAME=justworks
 DISK=none
 PART1=none
 PART2=none
+
+DEPS="parted"
+NOT_FIRST_LAUNCH_FILE="./not_first_launch"
 
 # Exit immediately if a command exits with a non-zero status
 set -eEo pipefail
@@ -51,12 +54,16 @@ ct()
     read NEXT
   case $NEXT in
     y|Y) break ;;
-    n|N) echo -e "${RED}-- aborted..${RESET}"; exit 1 ;;
+    n|N) echo -e "-- ${RED}aborted..${RESET}"; exit 1 ;;
   esac
   done
 }
 
 reset_steps() {
+  if [[ ! -f "$NOT_FIRST_LAUNCH_FILE" ]]; then
+    return
+  fi
+  echo "-- starting reset ${RED}past installation${RESET}"
   if mountpoint -q /mnt; then
     umount -R /mnt
   fi
@@ -68,6 +75,8 @@ reset_steps() {
 
 step0()
 {
+  # sign about launch (for reset)
+  touch "$NOT_FIRST_LAUNCH_FILE"
   # checking internet connection
   set +e
   if curl -s --head https://google.com --max-time 5 >/dev/null; then
@@ -87,13 +96,14 @@ step1()
   # print logo
   echo -e "-- ${GREEN}STEP 1${RESET}"
   cd "$SCRIPT_DIR"
+
+  echo ""
+  echo ""
   figlet -t -c -f ./share/figlet/Delta\ Corps\ Priest\ 1.flf $NAME | lolcat
   echo ""
   echo ""
-  echo ""
-  echo ""
   # install dependencies
-  xi parted
+  xi "$DEPS"
 
   # continue
   ct
