@@ -209,7 +209,8 @@ step3()
   ct
 }
 
-step4 {
+step4()
+{
   # creating world
   echo -e "-- ${GREEN}STEP 4${RESET}"
   echo -e "-- creating ${RED}world${RESET}"
