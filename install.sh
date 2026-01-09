@@ -89,7 +89,9 @@ step0()
     exit 1
   fi
   set -e
-  
+
+  # continue
+  ct
 }
 
 step1()
@@ -111,6 +113,9 @@ step1()
   echo ""
   # install dependencies
   xi parted
+
+  # continue
+  ct
 }
 
 step2()
@@ -150,6 +155,9 @@ step2()
   parted -s /dev/$DISK set 1 boot on
   echo -e "-- ${RED}partitioning done${RESET}"
   parted /dev/$DISK print
+
+  # continue
+  ct
 }
 
 step3()
@@ -204,19 +212,18 @@ step3()
   
   mkfs.vfat -F 32 ${PART1}
   mount ${PART1}
+
+  # continue
+  ct
 }
 
 # run
 check-step
 
 step0
-ct
 
 step1
-ct
 
 step2
-ct
 
 step3
-ct
