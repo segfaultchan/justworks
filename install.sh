@@ -90,8 +90,8 @@ partitioning()
 
   echo -e "-- making partitions using ${RED}parted${RESET} in script mode"
   parted -s /dev/$DISK mklabel gpt
-  parted -s /dev/$DISK mkpart primary 0MiB 512MiB
-  parted -s /dev/$DISK mkpart primary 512MiB 100%
+  parted -s /dev/$DISK mkpart primary 1MiB 513MiB
+  parted -s /dev/$DISK mkpart primary 513MiB 100%
   parted -s /dev/$DISK set 1 esp on
   parted -s /dev/$DISK set 1 boot on
   parted -s /dev/$DISK set 2 
