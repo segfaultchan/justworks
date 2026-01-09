@@ -14,7 +14,15 @@ DISK=none
 PART1=none
 PART2=none
 
+# xbps
+REPO="https://repo-default.voidlinux.org/current"
+BASE_PACKAGES="base-system xtools cryptsetup limine efibootmgr terminus-font neovim dhcpcd openresolv sudo"
+LAPTOP_PACKAGES="tlp iwd powertop"
+
+# for script
 DEPS="parted"
+
+# flags
 NOT_FIRST_LAUNCH_FILE="./not_first_launch"
 
 # Exit immediately if a command exits with a non-zero status
@@ -201,6 +209,24 @@ step3()
   ct
 }
 
+step4 {
+  # creating world
+  echo -e "-- ${GREEN}STEP 4${RESET}"
+  echo -e "-- creating ${RED}world${RESET}"
+
+  local CHOICE
+  echo "-- install ${RED}laptop${RESET} packages? (wifi,power managment, etc): "
+  read CHOICE
+  case $CHOICE in
+    y|Y) xbps-install -Sy -R "$REPO" -r /mnt $LAPTOP_PACKAGES ;;
+    n|N) echo -e "-- no laptop ${RED}packages${RESET}"; exit 1 ;;
+  esac
+  xbps-install -Sy -R "$REPO" -r /mnt $BASE_PACKAGES
+
+  # continue
+  ct
+}
+
 # run
 reset_steps
 
@@ -211,3 +237,5 @@ step1
 step2
 
 step3
+
+step4
