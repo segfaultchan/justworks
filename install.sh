@@ -171,6 +171,7 @@ step3()
   echo "PART1=$PART1 PART2=$PART2"
   
   set +e
+  echo -e "-- encryption for ${RED}partition${RESET}"
   while true; do
     cryptsetup luksFormat ${PART2} \
       --iter-time=2000 \
@@ -182,6 +183,7 @@ step3()
     fi
   done
 
+  echo -e "-- opening ${RED}crypted${RESET} partition"
   while true; do
     cryptsetup luksOpen ${PART2} root
     if [[ $? -eq 0 ]]; then
@@ -189,6 +191,7 @@ step3()
     fi
   done
   set -e
+
   echo -e "-- crypted ${RED}${PART2}${RESET} partition"
   
   mkfs.btrfs /dev/mapper/root
