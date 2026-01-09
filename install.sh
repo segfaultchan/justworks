@@ -191,12 +191,14 @@ step3()
       --pbkdf=argon2id \
       --key-size=256 \
       --hash=sha256
+    if [[ $? -eq 0 ]]; then
+      break
+    fi
 
     cryptsetup luksOpen ${PART2} root
     if [[ $? -eq 0 ]]; then
       break
     fi
-    break
   done
 
   set -e
