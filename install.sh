@@ -16,8 +16,9 @@ PART2=none
 
 # xbps
 REPO="https://repo-default.voidlinux.org/current"
-BASE_PACKAGES="base-system xtools cryptsetup limine efibootmgr terminus-font neovim dhcpcd openresolv sudo"
-LAPTOP_PACKAGES="tlp iwd powertop"
+BASE_PACKAGES="base-system xtools cryptsetup limine efibootmgr terminus-font neovim dhcpcd openresolv sudo net-tools nmap wireshark curl wget rsync"
+LAPTOP_PACKAGES="tlp iwd powertop bluez"
+ZOOMER_PACKAGES="lsd fish-shell fd btop yazi dust"
 
 # for script
 DEPS="parted"
@@ -228,7 +229,7 @@ step4()
     y|Y) xbps-install -Sy -r /mnt -R $REPO $LAPTOP_PACKAGES ;;
     n|N) echo -e "-- no laptop ${RED}packages${RESET}" ;;
   esac
-  xbps-install -Sy -r /mnt -R $REPO $BASE_PACKAGES
+  xbps-install -Sy -r /mnt -R $REPO $BASE_PACKAGES $ZOOMER_PACKAGES
 
   # continue
   ct
