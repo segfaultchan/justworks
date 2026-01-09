@@ -216,13 +216,13 @@ step4()
   echo -e "-- creating ${RED}world${RESET}"
 
   local CHOICE
-  echo "-- install ${RED}laptop${RESET} packages? (wifi,power managment, etc): "
+  echo -e "-- install ${RED}laptop${RESET} packages? (wifi,power managment, etc): "
   read CHOICE
   case $CHOICE in
-    y|Y) xbps-install -Sy -R "$REPO" -r /mnt $LAPTOP_PACKAGES ;;
+    y|Y) xbps-install -y -r /mnt -R $REPO $LAPTOP_PACKAGES ;;
     n|N) echo -e "-- no laptop ${RED}packages${RESET}"; exit 1 ;;
   esac
-  xbps-install -Sy -R "$REPO" -r /mnt $BASE_PACKAGES
+  xbps-install -y -r /mnt -R $REPO $BASE_PACKAGES
 
   # continue
   ct
