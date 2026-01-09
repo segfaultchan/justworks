@@ -192,7 +192,7 @@ step3()
   mount -o compress=zstd3,subvol=@snapshots /dev/mapper/root /mnt/.snapshots
   
   mkfs.vfat -F 32 ${PART1}
-  mount ${PART1}
+  mount ${PART1} /mnt/boot
 
   # continue
   ct
