@@ -162,8 +162,8 @@ step3()
   echo "-- your partitions ${RED}are right?${RESET}"
   echo "PART1=$PART1 PART2=$PART2"
   
+  set +e
   while true; do
-    set +e
     cryptsetup luksFormat ${PART2} \
       --iter-time=2000 \
       --pbkdf=argon2id \
@@ -172,13 +172,14 @@ step3()
     if [[ $? -eq 0 ]]; then
       break
     fi
+  done
 
+  while true; do
     cryptsetup luksOpen ${PART2} root
     if [[ $? -eq 0 ]]; then
       break
     fi
   done
-
   set -e
   
   mkfs.btrfs /dev/mapper/root
