@@ -130,8 +130,8 @@ init_fs_encrypt()
   mkdir /mnt/{boot,.snapshots}
   mount -o compress=zstd3,subvol=@snapshots /dev/mapper/root /mnt/.snapshots
   
-  mkfs.vfat -F 32 /dev/${PART1}
-  mount /dev/${PART1}
+  mkfs.vfat -F 32 ${PART1}
+  mount ${PART1}
 }
 
 # run
