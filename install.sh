@@ -68,8 +68,7 @@ check-step()
   fi
 
   CURRENT_STEP="$(<"$STATE_PATH")"
-  echo -e "-- starting from ${RED}${CURRENT_STEP} step"
-  echo ${CURRENT_STEP}
+  echo -e "-- starting from ${RED}${CURRENT_STEP} step${RESET}"
 }
 
 step0()
@@ -77,7 +76,7 @@ step0()
   STEP=0
   # skip step check
   if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return 0
+    return
   fi
   # checking internet connection
   echo $STEP > "$STATE_PATH"
@@ -98,7 +97,7 @@ step1()
   STEP=1
   # skip step check
   if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return 0
+    return
   fi
   # break point to step1
   echo $STEP > $STATE_PATH
@@ -119,7 +118,7 @@ step2()
   STEP=2
   # skip step check
   if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return 0
+    return
   fi
   # break point to step2
   echo $STEP > $STATE_PATH
@@ -158,7 +157,7 @@ step3()
   STEP=3
   # skip step check
   if [[ $CURRENT_STEP -gt $STEP ]]; then
-    return 0
+    return
   fi
   # break point to step3
   echo $STEP > $STATE_PATH
